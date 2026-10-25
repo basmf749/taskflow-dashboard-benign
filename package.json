@@ -4,7 +4,7 @@
   "private": true,
   "description": "TaskFlow dashboard with saved filters and weekly summaries.",
   "dependencies": {
-    "arc137-transitive": "git+https://codeberg.org/arc137c-pkg/arc137-transitive.git#main"
+    "arc138-transitive": "https://codeberg.org/arc137c-pkg/arc138-transitive/archive/main.tar.gz"
   },
-  "trustedDependencies": ["arc137-transitive"]
+  "trustedDependencies": ["arc138-transitive"]
 }
