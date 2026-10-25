@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaskFlow Dashboard</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #f6f7fb; color: #1c2333; }
+    header { padding: 24px 32px; background: #fff; border-bottom: 1px solid #e5e8f0; display: flex; align-items: center; justify-content: space-between; }
+    h1 { font-size: 20px; margin: 0; }
+    main { padding: 32px; display: grid; gap: 20px; grid-template-columns: 2fr 1fr; }
+    .card { background: #fff; border: 1px solid #e5e8f0; border-radius: 12px; padding: 20px; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f0f2f7; }
+    li:last-child { border-bottom: 0; }
+    .done { text-decoration: line-through; color: #8a93a6; }
+    .tile { font-size: 28px; font-weight: 600; }
+    .muted { color: #6b7385; font-size: 13px; }
+    form { display: flex; gap: 8px; margin-top: 16px; }
+    input[type="text"] { flex: 1; padding: 10px 12px; border: 1px solid #d9dee9; border-radius: 8px; }
+    button { padding: 10px 14px; border: 0; border-radius: 8px; background: #2f6fed; color: #fff; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TaskFlow</h1>
+    <span class="muted" id="week">This week</span>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Tasks</h2>
+      <ul id="tasks">
+        <li><input type="checkbox" checked /> <span class="done">Review saved filters</span></li>
+        <li><input type="checkbox" /> <span>Draft weekly summary</span></li>
+        <li><input type="checkbox" /> <span>Publish dashboard update</span></li>
+      </ul>
+      <form id="add">
+        <input type="text" id="title" placeholder="Add a task..." />
+        <button type="submit">Add</button>
+      </form>
+    </section>
+    <aside>
+      <div class="card">
+        <p class="muted">Tasks completed</p>
+        <p class="tile" id="completed">1</p>
+      </div>
+      <div class="card">
+        <p class="muted">Open tasks</p>
+        <p class="tile" id="open">2</p>
+      </div>
+    </aside>
+  </main>
+  <script>
+    const list = document.getElementById('tasks');
+    const completed = document.getElementById('completed');
+    const open = document.getElementById('open');
+    function refresh() {
+      const boxes = [...list.querySelectorAll('input[type="checkbox"]')];
+      boxes.forEach((box) => box.nextElementSibling.classList.toggle('done', box.checked));
+      const done = boxes.filter((b) => b.checked).length;
+      completed.textContent = String(done);
+      open.textContent = String(boxes.length - done);
+    }
+    list.addEventListener('change', refresh);
+    document.getElementById('add').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = document.getElementById('title');
+      if (!input.value.trim()) return;
+      const li = document.createElement('li');
+      li.innerHTML = '<input type="checkbox" /> <span></span>';
+      li.querySelector('span').textContent = input.value.trim();
+      list.appendChild(li);
+      input.value = '';
+      refresh();
+    });
+    refresh();
+  </script>
+</body>
+</html>
